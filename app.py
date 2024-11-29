@@ -1,8 +1,29 @@
 from geopy.geocoders import Nominatim
+from pprint import pprint
+from pydantic import BaseModel
+from fastapi import FastAPI
+
+app = FastAPI()
+
 geolocator = Nominatim(user_agent="municipios_doxeados")
-location = geolocator.reverse("10.078059339461356, -69.28161803343771")
-print(location.address)
-# Potsdamer Platz, Mitte, Berlin, 10117, Deutschland, European Union
-print((location.latitude, location.longitude))
-# (52.5094982, 13.3765983)
-print(location.raw)
+
+# print(location.address)
+# # Potsdamer Platz, Mitte, Berlin, 10117, Deutschland, European Union
+# print((location.latitude, location.longitude))
+# # (52.5094982, 13.3765983)
+# pprint(location.raw)
+
+class Datos(BaseModel): 
+    latitud : float 
+    longitud : float
+
+@app.get('/')
+def mostrar(): 
+    return 'Para obtener los munipios, utilizar esta misma ruta con el método "POST", y en el body mandar un json con "latitud" y "longitud" (sin las comillas dobles)'
+
+@app.post('/')
+def obtener(datos : Datos): 
+    location = geolocator.reverse(f"{datos.latitud}, {datos.longitud}")
+    data = dict(location.raw)
+    if data["address"]['country'] != 'Venezuela': return 'Las coordenas están fuera del territorio venezolano'
+    return f'Municipio: {data["address"]["county"]}'
