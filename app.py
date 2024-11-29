@@ -2,10 +2,19 @@ from geopy.geocoders import Nominatim
 from pprint import pprint
 from pydantic import BaseModel
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 geolocator = Nominatim(user_agent="municipios_doxeados")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # print(location.address)
 # # Potsdamer Platz, Mitte, Berlin, 10117, Deutschland, European Union
