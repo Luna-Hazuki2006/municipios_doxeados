@@ -28,7 +28,7 @@ class Datos(BaseModel):
 
 @app.get('/')
 def mostrar(): 
-    return 'Para obtener los munipios, utilizar esta misma ruta con el método "POST", y en el body mandar un json con "latitud" y "longitud" (sin las comillas dobles)'
+    return 'Para obtener los municipios, utilizar esta misma ruta con el método "POST", y en el body mandar un json con "latitud" y "longitud" (sin las comillas dobles)'
 
 @app.post('/')
 def obtener(datos : Datos): 
